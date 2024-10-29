@@ -1,99 +1,243 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# RabbitMQ with NestJS and Docker
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Here’s a README.md file to explain the entire setup:
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+NestJS RabbitMQ Microservices with Docker Compose
 
-## Description
+This project demonstrates how to set up a NestJS application using RabbitMQ as a message broker, all managed within Docker Compose.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# Table of Contents
 
-## Project setup
+	•	Introduction
+	•	Requirements
+	•	Setup Guide
+	•	1. Create a New NestJS Application
+	•	2. Install Dependencies
+	•	3. Docker Compose Configuration
+	•	4. Dockerfile for NestJS
+	•	5. Configure NestJS for RabbitMQ
+	•	6. Create Producer and Consumer Services
+	•	Running the Application
+	•	Testing the Setup
 
-```bash
-$ npm install
-```
+# Introduction
 
-## Compile and run the project
+This setup uses Docker Compose to start a NestJS application alongside RabbitMQ. The NestJS app acts as both a producer and consumer of messages in a RabbitMQ queue.
 
-```bash
-# development
-$ npm run start
+# Requirements
 
-# watch mode
-$ npm run start:dev
+•	Node.js and npm (for initial project setup)
 
-# production mode
-$ npm run start:prod
-```
+•	Docker and Docker Compose
 
-## Run tests
+# Setup Guide
+
+## 1. Create a New NestJS Application
+
+### 1.1	Install the NestJS CLI if you haven’t done so already:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install -g @nestjs/cli
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 1.2	Create a new NestJS project:
 
 ```bash
-$ npm install -g mau
-$ mau deploy
+nest new my-nest-rabbitmq-app
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
-## Resources
+## 2. Install Dependencies
 
-Check out a few resources that may come in handy when working with NestJS:
+To use RabbitMQ with NestJS, install the microservices and amqplib packages:
+```bash
+npm install --save @nestjs/microservices amqplib
+```
+## 3. Docker Compose Configuration
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Create a docker-compose.yml file in the root of the project to define services for both RabbitMQ and the NestJS application:
+```bash
+version: '3.8'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"      # RabbitMQ connection port
+      - "15672:15672"    # RabbitMQ management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-## Support
+  nestjs-app:
+    build:
+      context: .                # Refers to Dockerfile location
+      dockerfile: Dockerfile    # Dockerfile name
+    container_name: nestjs-app
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672  # RabbitMQ connection URL
+    ports:
+      - "3000:3000"  # Expose NestJS app on port 3000
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 4. Dockerfile for NestJS
 
-## Stay in touch
+In the project root, create a Dockerfile to define the Docker image for the NestJS application:
+```bash
+# Dockerfile
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+FROM node:18-alpine
 
-## License
+WORKDIR /app
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start:prod"]
+```
+
+## 5. Configure NestJS for RabbitMQ
+
+Edit src/main.ts to set up a RabbitMQ microservice:
+```bash
+// src/main.ts
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+
+  // RabbitMQ connection configuration
+  const rabbitMQUrl = process.env.RABBITMQ_URL || 'amqp://localhost:5672';
+  const rabbitMQOptions: MicroserviceOptions = {
+    transport: Transport.RMQ,
+    options: {
+      urls: [rabbitMQUrl],
+      queue: 'main_queue',
+      queueOptions: {
+        durable: false,
+      },
+    },
+  };
+
+  // Connect the microservice to RabbitMQ
+  app.connectMicroservice(rabbitMQOptions);
+
+  await app.startAllMicroservices();
+  await app.listen(3000);
+}
+
+bootstrap();
+```
+
+## 6. Create Producer and Consumer Services
+
+### 6.1 Producer Service
+
+Create a ProducerService to send messages to RabbitMQ. In src/producer.service.ts:
+```bash
+// src/producer.service.ts
+import { Injectable } from '@nestjs/common';
+import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
+
+@Injectable()
+export class ProducerService {
+  private client: ClientProxy;
+
+  constructor() {
+    this.client = ClientProxyFactory.create({
+      transport: Transport.RMQ,
+      options: {
+        urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
+        queue: 'main_queue',
+        queueOptions: {
+          durable: false,
+        },
+      },
+    });
+  }
+
+  // Method to send a message to RabbitMQ
+  async sendMessage(pattern: string, data: any) {
+    return this.client.send(pattern, data).toPromise();
+  }
+}
+```
+
+Register ProducerService in src/app.module.ts:
+```bash
+// src/app.module.ts
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { ProducerService } from './producer.service';
+
+@Module({
+  controllers: [AppController],
+  providers: [ProducerService],
+  exports: [ProducerService],
+})
+export class AppModule {}
+```
+
+### 6.2 Consumer Setup in Controller
+
+Define the HTTP endpoint and RabbitMQ message listener in src/app.controller.ts:
+```bash
+// src/app.controller.ts
+import { Controller, Get } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { ProducerService } from './producer.service';
+
+@Controller()
+export class AppController {
+  constructor(private readonly producerService: ProducerService) {}
+
+  // HTTP endpoint to send a message to RabbitMQ
+  @Get('send')
+  async sendMessage() {
+    const message = { text: 'Hello from RabbitMQ!' };
+    const response = await this.producerService.sendMessage('message_print', message);
+    return response;
+  }
+
+  // Consumer for RabbitMQ messages with the pattern 'message_print'
+  @MessagePattern('message_print')
+  handleMessage(@Payload() data: any) {
+    console.log('Received message:', data);
+    return 'Message processed successfully';
+  }
+}
+```
+
+# Running the Application
+
+To start the NestJS and RabbitMQ services, run:
+```bash
+docker-compose up --build
+```
+
+This will:
+
+•	Build the Docker image for the NestJS app.
+•	Start RabbitMQ and NestJS, connecting them via Docker Compose.
+
+Testing the Setup
+
+1.	Send a Message: Open http://localhost:3000/send to trigger a message sent to RabbitMQ.
+2.	Receive the Message: The handleMessage method in AppController will receive and log the message.
+3.	RabbitMQ Management UI: Access RabbitMQ at http://localhost:15672 (username: guest, password: guest) to view the queue.
