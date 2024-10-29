@@ -189,7 +189,6 @@ import { ProducerService } from './producer.service';
 @Module({
   controllers: [AppController],
   providers: [ProducerService],
-  exports: [ProducerService],
 })
 export class AppModule {}
 ```
