@@ -4,7 +4,7 @@ import { AppController } from './app.controller';
 import { ProducerService } from './producer.service';
 
 @Module({
-  controllers: [AppController],    // <-- Assure-toi que AppController est là
-  providers: [ProducerService],    // <-- Assure-toi que ProducerService est là
+  controllers: [AppController],
+  providers: [ProducerService],
 })
 export class AppModule {}
