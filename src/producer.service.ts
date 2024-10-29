@@ -19,7 +19,7 @@ export class ProducerService {
     });
   }
 
-  // Fonction pour envoyer un message
+  // Method to send a message to RabbitMQ
   async sendMessage(pattern: string, data: any) {
     return this.client.send(pattern, data).toPromise();
   }
