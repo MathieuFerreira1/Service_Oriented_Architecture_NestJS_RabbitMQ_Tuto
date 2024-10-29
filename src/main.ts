@@ -6,7 +6,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Configure RabbitMQ en utilisant les variables d'environnement
+  // RabbitMQ connection configuration
   const rabbitMQUrl = process.env.RABBITMQ_URL || 'amqp://localhost:5672';
   const rabbitMQOptions: MicroserviceOptions = {
     transport: Transport.RMQ,
@@ -19,7 +19,7 @@ async function bootstrap() {
     },
   };
 
-  // Connecte le microservice RabbitMQ
+  // Connect the microservice to RabbitMQ
   app.connectMicroservice(rabbitMQOptions);
 
   await app.startAllMicroservices();
