@@ -4,8 +4,8 @@ services:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
-      - "5672:5672"      # Port de RabbitMQ pour l'application
-      - "15672:15672"    # Port de l'interface de gestion Web
+      - "5672:5672"      # RabbitMQ connection port
+      - "15672:15672"    # RabbitMQ management dashboard port
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
@@ -17,13 +17,13 @@ services:
 
   nestjs-app:
     build:
-      context: .                # Répertoire contenant le Dockerfile
-      dockerfile: Dockerfile    # Nom du Dockerfile
+      context: .                # Points to the Dockerfile location
+      dockerfile: Dockerfile    # Dockerfile name
     container_name: nestjs-app
     depends_on:
       rabbitmq:
         condition: service_healthy
     environment:
-      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672  # URL de RabbitMQ via Docker Compose
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672  # URL for connecting to RabbitMQ
     ports:
-      - "3000:3000"  # Port de l'application NestJS
+      - "3000:3000"  # Expose NestJS app on port 3000
