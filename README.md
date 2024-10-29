@@ -56,7 +56,7 @@ npm install --save @nestjs/microservices amqplib
 ## 3. Docker Compose Configuration
 
 Create a docker-compose.yml file in the root of the project to define services for both RabbitMQ and the NestJS application:
-```bash
+```yaml
 version: '3.8'
 services:
   rabbitmq:
@@ -113,7 +113,7 @@ CMD ["npm", "run", "start:prod"]
 ## 5. Configure NestJS for RabbitMQ
 
 Edit src/main.ts to set up a RabbitMQ microservice:
-```bash
+```typescript
 // src/main.ts
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -150,7 +150,7 @@ bootstrap();
 ### 6.1 Producer Service
 
 Create a ProducerService to send messages to RabbitMQ. In src/producer.service.ts:
-```bash
+```typescript
 // src/producer.service.ts
 import { Injectable } from '@nestjs/common';
 import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
@@ -180,7 +180,7 @@ export class ProducerService {
 ```
 
 Register ProducerService in src/app.module.ts:
-```bash
+```typescript
 // src/app.module.ts
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -196,7 +196,7 @@ export class AppModule {}
 ### 6.2 Consumer Setup in Controller
 
 Define the HTTP endpoint and RabbitMQ message listener in src/app.controller.ts:
-```bash
+```typescript
 // src/app.controller.ts
 import { Controller, Get } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
